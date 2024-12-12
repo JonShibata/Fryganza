@@ -1,0 +1,2 @@
+# Fryganza
+Fryer control gui
