@@ -1,0 +1,21 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+    
+        {
+            "type": "pwa-chrome",
+            "request": "launch",
+            "name": "FryGanza.html",
+            "file": "/home/jon/code/FryganzaController/_Ref/FryGanza.html"
+        },
+        {
+            "type": "pwa-chrome",
+            "request": "launch",
+            "name": "ajax.html",
+            "file": "/home/jon/code/FryganzaController/_Ref/ajax.html"
+        }
+    ]
+}

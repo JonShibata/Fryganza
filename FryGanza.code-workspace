@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+    ],
+    "settings": {
+        "files.associations": {
+            "thermostat.h": "c"
+        },
+        "window.title": "Fryganza"
+    }
+}
