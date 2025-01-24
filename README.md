@@ -22,8 +22,6 @@ MAX6675 library by Adafruit v 1.1.2
 
 LiquidCrystal v 1.0.7
 
-Include symlink to this in `src/Thermostat/src` directory
-https://github.com/jonshibata/thermostat
 <br><br>
 
 ## Wiring
