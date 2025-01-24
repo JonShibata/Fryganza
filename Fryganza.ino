@@ -4,44 +4,35 @@
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <WebServer.h>
+#include <LittleFS.h>
 #include "src/Thermostat/src/Thermostat.hpp"
-
-#include "html.h"
-
-#define iPinServo D1
 
 String T_Filt_2 = "0.0";
 String T_Filt_3 = "0.0";
 
-Servo valve_servo;
+WebServer server(80);
 
 Thermostat thermostat;
-
-int ktcSO = 12;
-int ktcCS = 13;
-int ktcCLK = 14;
-
-MAX6675 ktc(ktcCLK, ktcCS, ktcSO);
-
-IPAddress local_IP(192, 168, 4, 1);
-IPAddress gateway(192, 168, 1, 1);
-IPAddress subnet(255, 255, 0, 0);
-
-WebServer server(80);
 
 void setup() {
   Serial.begin(115200);
 
-  valve_servo.attach(iPinServo);
-  valve_servo.write(thermostat.getValvePositionOff());
+  if (!LittleFS.begin(true)) {
+    Serial.println("An Error has occurred while mounting LittleFS");
+    return;
+  }
+
+  IPAddress local_IP(192, 168, 4, 1);
+  IPAddress gateway(192, 168, 1, 1);
+  IPAddress subnet(255, 255, 0, 0);
 
   if (!WiFi.config(local_IP, gateway, subnet)) {
     Serial.println("STA Failed to configure");
   }
 
-  WiFi.hostname("Fryganza");
-  WiFi.enableSTA(false);
-  WiFi.enableAP(true);
+  const char* ssid = "Fryganza";
+  const char* password = "";
+  WiFi.softAP(ssid, password);
 
   server.on("/", ProcessRoot);
   server.on("/update", ProcessUpdates);
@@ -70,13 +61,20 @@ void setup() {
           NULL,         // Parameter to pass to the task
           1,            // Priority
           NULL,         // Task handle
-          1             // Core to run the task on (0 or 1)
+          0             // Core to run the task on (0 or 1)
   );
 }
 
 void loop() {}
 
 void taskCore0(void* parameter) {
+
+  MAX6675 ktc(SCK, MOSI, MISO);
+  Servo valve_servo;
+
+  valve_servo.attach(D0);
+  valve_servo.write(thermostat.getValvePositionOff());
+
   while (true) {
     double T = ktc.readFahrenheit();
     delay(200);
@@ -139,6 +137,13 @@ void ProcessUpdates() {
 }
 
 void ProcessRoot() {
-  server.send(200, "text/html", char_html);
+  File file = LittleFS.open("/index.html", "r");
+  if (!file) {
+    Serial.println("Failed to open file for reading");
+    return;
+  }
+  String fileContent = file.readString();
+  file.close();
+  server.send(200, "text/html", fileContent);
   Serial.println("got request from device");
 }
