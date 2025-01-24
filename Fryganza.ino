@@ -8,7 +8,6 @@
 #include "src/Thermostat/src/Thermostat.hpp"
 
 String T_Filt_2 = "0.0";
-String T_Filt_3 = "0.0";
 
 WebServer server(80);
 
