@@ -1,6 +1,3 @@
-[submodule "src/src/Thermostat"]
-	path = src/src/Thermostat
-	url = https://github.com/JonShibata/Thermostat.git
-[submodule "src/Thermostat"]
-	path = src/Thermostat
+[submodule "lib/Thermostat"]
+	path = lib/Thermostat
 	url = https://github.com/JonShibata/Thermostat.git
